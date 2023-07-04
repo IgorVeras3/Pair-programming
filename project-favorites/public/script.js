@@ -18,9 +18,33 @@ async function load() {
 load()
 */
 
-function addElement({ name, url }) {
-    // criem os códigos
-}
+function addElement(name, url) {
+    // const li = document.createElement('li')
+    // const a = document.createElement('a')
+    // const trash = document.createElement('span')
+
+    // a.href = url
+    // a.innerHTML = name
+    // a.target = "_blank" 
+    // ul.append(li)
+    // li.append(a)
+    // trash.append()
+    
+  }
+
+
+    
+    // const newLocal = document.querySelector('.newlink').innerHTML += `
+    //         <div class="lista">
+    //             <span id="item_lista">
+    //                 ${document.querySelector('.newlink input').value}
+    //             </span>
+    //             <button class="delete">
+    //                 <i class="far fa-trash-alt"></i>
+    //             </button>
+    //         </div>
+    //     `;
+
 
 function removeElement(element) {
     // criem os códigos
