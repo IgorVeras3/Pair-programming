@@ -18,36 +18,27 @@ async function load() {
 load()
 */
 
-function addElement(name, url) {
-    // const li = document.createElement('li')
-    // const a = document.createElement('a')
-    // const trash = document.createElement('span')
+function addElement({ name, url }) {
+    const li = document.createElement('li')
+    const a = document.createElement("a")
+    const trash = document.createElement("span")
 
-    // a.href = url
-    // a.innerHTML = name
-    // a.target = "_blank" 
-    // ul.append(li)
-    // li.append(a)
-    // trash.append()
+    a.href = url
+    a.innerHTML = name
+    a.target = "_blank"
+
+    trash.innerHTML = "x"
+    trash.onclick = () => removeElement(trash)
     
-  }
-
-
+    ul.append(li)
+    li.append(a)
+    li.append(trash)
     
-    // const newLocal = document.querySelector('.newlink').innerHTML += `
-    //         <div class="lista">
-    //             <span id="item_lista">
-    //                 ${document.querySelector('.newlink input').value}
-    //             </span>
-    //             <button class="delete">
-    //                 <i class="far fa-trash-alt"></i>
-    //             </button>
-    //         </div>
-    //     `;
-
+}
 
 function removeElement(element) {
-    // criem os códigos
+    if (confirm('Tem certeza que deseja deletar?'))
+        element.parentNode.remove()
 }
 
 form.addEventListener('submit', (event) => {
@@ -64,8 +55,8 @@ form.addEventListener('submit', (event) => {
     if (!url)
         return alert('O texto não está formatado da maneira correta.')
 
-    if (!/^http/.test(url))
-        return alert('Digite a url da maneira correta.')
+    // if (!/^http/.test(url))
+    //     return alert('Digite a url da maneira correta.')
 
     addElement({ name, url })
 
