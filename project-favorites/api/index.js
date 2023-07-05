@@ -19,16 +19,19 @@ http.createServer((req, res) => {
   }
 
   if (!name || !url) {
+    res.setHeader('Access-Control-Allow-Origin', '*'); // Permitir qualquer origem (não recomendado em produção)
     return res.end(JSON.stringify(data));
   }
 
   if (del) {
     const filteredData = data.urls.filter((item) => item.url !== url);
     data.urls = filteredData;
+    res.setHeader('Access-Control-Allow-Origin', '*'); // Permitir qualquer origem (não recomendado em produção)
     return writeFile((message) => res.end(message));
   }
 
   data.urls.push({ name, url });
+  res.setHeader('Access-Control-Allow-Origin', '*'); // Permitir qualquer origem (não recomendado em produção)
   return writeFile((message) => res.end(message));
 
 }).listen(3000, () => console.log('API rodando...'));

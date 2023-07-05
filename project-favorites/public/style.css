@@ -1,12 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+
 * {
-    padding: 0;
     margin: 0;
     box-sizing: border-box;
+    
 }
 
 body{
   height: 100vh;
   background: #066acd;
+  font-family: 'Poppins', sans-serif;
+  
 }
 
 .container {
@@ -14,11 +18,14 @@ body{
   top: 50%;
   left: 50%;
   background: white;
-  border-radius: 10px;
+  border-radius: 2em;
   min-width: 450px;
   position: absolute;
   min-height: 100px;
+  padding: 2em 1em;
   transform: translate(-50%, -50%);
+  box-shadow: 4px 8px 10px 0px rgba(0, 0, 0, 0.233);
+
 }
 
 h1 {
@@ -27,18 +34,18 @@ h1 {
 }
 #newlink{
   position: relative;
-  padding: 30px 20px;
+  padding: 2em;
 }
 #newlink input{
-  width: 75%;
+  width: 100%;
+  padding: 1em;
   height: 45px;
-  padding: 12px;
   color: #111;
   font-weight: 500;
   position: relative;
   border-radius: 5px;
-  font-family: 'Poppins', sans-serif;
   font-size: 15px;
+  align-self: center;
   border: 2px solid #d1d3d4;
 }
 #newlink input:focus{
@@ -46,33 +53,33 @@ h1 {
   border-color: #066acd;
 }
 
+ul{
+  margin: 0;
+  padding: 0 2em;
+}
+
 #lista{
   border-radius: 10px;
   width: 100%;
   position: relative;
   background-color: #fff;
-  padding: 30px 20px;
-  margin-top: 10px;
-
-}
-.item{
-  
+  align-items: center;
+  margin-left: 0;
 
 }
 
-#lista a {
+a {
   display: block;
   
-  color: #333;
+  color: #066acd;
   text-decoration: none;  
-  
-  padding: 16px 0;
-  font-size: 1.8rem;
+  list-style: none;
+  font-weight: 600;
   
 }
 
 a:hover {
-  font-weight: bold;
+  font-weight: 900;
 }
 
 li {
@@ -82,14 +89,11 @@ li {
   align-items: center;
   justify-content: space-between;
   
-  border-bottom: 1px solid #ddd;
-  border-radius: 5px;
   height: 50px;
-  margin-bottom: 8px;
+  margin-bottom: 0.5em;
   padding: 5px 10px; 
   list-style: none;
 }
-
 
 li:first-child,
 li:last-child {
@@ -98,4 +102,12 @@ li:last-child {
 
 li span {
   cursor:pointer;
+  font-size: larger;
+  color: red;
+  font-weight: 600;
+}
+
+li span:hover{
+  font-weight: 900;
+  font-size: x-large;
 }
