@@ -15,7 +15,7 @@ body{
 
 .container {
   width: 40%;
-  top: 50%;
+  top: 20%;
   left: 50%;
   background: white;
   border-radius: 2em;
@@ -23,7 +23,7 @@ body{
   position: absolute;
   min-height: 100px;
   padding: 2em 1em;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, 0);
   box-shadow: 4px 8px 10px 0px rgba(0, 0, 0, 0.233);
 
 }
