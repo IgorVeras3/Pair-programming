@@ -38,6 +38,11 @@ http.createServer((req, res) => {
     data.urls = filteredData;
     return writeFile((message) => res.end(message));
   }
+   // Verificar se a URL já existe na lista
+   const existingURL = data.urls.find((item) => item.url === url);
+   if (existingURL) {
+     return res.end('URL já existe na lista.');
+   }
 
   data.urls.push({ name, url });
   return writeFile((message) => res.end(message));
