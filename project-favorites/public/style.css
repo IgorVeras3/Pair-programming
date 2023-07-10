@@ -71,15 +71,15 @@ ul{
 a {
   display: block;
   
-  color: #066acd;
+  color: green;
   text-decoration: none;  
   list-style: none;
   font-weight: 600;
-  
+  font-size: larger;
 }
 
 a:hover {
-  font-weight: 900;
+  color: rgb(0, 71, 0);
 }
 
 li {
@@ -106,8 +106,10 @@ li span {
   color: red;
   font-weight: 600;
 }
-
+.editar{
+  color: blue;
+}
 li span:hover{
-  font-weight: 900;
+  font-weight: 600;
   font-size: x-large;
 }

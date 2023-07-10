@@ -1,101 +1,151 @@
-const ul = document.querySelector('ul') // colocando a lista em uma variavel
-const input = document.querySelector('input') // colocando o input em uma variavel
-const form = document.querySelector('form') // colocando o form em uma variavel
+const ul = document.querySelector('ul');
+const input = document.querySelector('input');
+const form = document.querySelector('form');
+let editingItem = null; // Variável para armazenar o item em edição
 
 // Função que carrega o conteúdo da API.
 async function load() {
-    // fetch está como await para evitar que entre num esquema de promisse e só devolva o conteúdo após a iteração qua acontece em seguida.
-    const res = await fetch('http://localhost:3000/').then((data) => data.json());
-    // Iterando no vetor com o conteúdo (JSON) que está vindo da API e adicionando-os no frontend.
-    res.urls.map(({ name, url }) => addElement({ name, url }));
+  const res = await fetch('http://localhost:3000/').then((data) => data.json());
+  res.urls.map(({ name, url }) => addElement({ name, url }));
 }
-
 load();
 
-// função que recebe objeto desestruturado com duas propriedades
+//recebe um objeto contendo o nome e a URL e cria os elementos HTML dinamicamente.
 function addElement({ name, url }) {
-    const li = document.createElement('li') // criando o elemento html de lista
-    const a = document.createElement("a") // criando o elemento html de link
-    const trash = document.createElement("span") // criando o elemento html de span
+  const li = document.createElement('li');
+  const a = document.createElement('a');
+  const trash = document.createElement('span');
+  const edit = document.createElement('span'); // Elemento de edição
+  edit.className = 'editar'
 
-    a.href = url //atribuindo url para o elemento link 
-    a.innerHTML = name // valor da propriedade name é atribuido ao conteúdo do elemento de link 
-    a.target = "_blank" //para abrir o link em uma nova aba
+  li.classList.add('elemento-li');
+  a.classList.add('elemento-a');
+  trash.classList.add('elemento-trash');
+  edit.classList.add('elemento-edit');
 
-    //criando elemento span de exclusão
-    trash.innerHTML = "x" 
+  a.href = url;
+  a.innerHTML = name;
+  a.target = '_blank';
 
-    // atribuindo um evento ao botão passando oproprio "X" como argumento
-    trash.onclick = () => removeElement(trash) 
-    
-    // elemento sendo anexados a estrutura da lista
-    ul.append(li) 
-    li.append(a)
-    li.append(trash)
+  trash.innerHTML = 'Excluir';
+  trash.onclick = () => removeElement(li, { name, url });
 
-    // Enviar dados para a API
-    saveDataToAPI({ name, url });
+  edit.innerHTML = 'Editar'; // Texto do elemento de edição
+  edit.onclick = () => editElement({ name, url }); // Chamar a função de edição
+
+  ul.append(li);
+  li.append(a);
+  li.append(edit); // Adicionar o elemento de edição ao item
+  li.append(trash);
 }
 
-// remove o elemento pai do objeto passado como argumento
-function removeElement(element) {
-    if (confirm('Tem certeza que deseja deletar?')) {
-        element.parentNode.remove();
-
-        // Extrair URL do elemento pai (link) do elemento removido
-        const url = element.parentNode.querySelector('a').href;
-
-        // Enviar solicitação de exclusão para a API
-        deleteDataFromAPI(url);
+// recebe um objeto contendo o nome e a URL 
+async function addElementAndSendToApi({ name, url }) {
+    //adicionar os elementos no frontend
+    addElement({ name, url });
+    // faz uma requisição para a API para enviar os dados inseridos.
+    const response = await fetch(`http://localhost:3000/?name=${name}&url=${url}`);
+    if (!response.ok) {
+        console.error(`Erro ao enviar os dados para a API: ${response.statusText}`);
     }
 }
 
-// Função para enviar os dados do novo elemento para a API
-function saveDataToAPI({ name, url }) {
-    //passando valores para url com encodeURIComponent garante que sejam corretamente codificados
-    fetch(`http://localhost:3000/?name=${encodeURIComponent(name)}&url=${encodeURIComponent(url)}`, {
-        method: 'POST',//para criação de dados na API
-    })
-        .then((response) => response.text())//recebe a resposta da solicitação
-        .then((message) => console.log(message)) //imprime a mensagem usando console
-        .catch((error) => console.error(error)); // recebe objeto de erro
+//chamada quando o usuário clica no botão de excluir
+async function removeElement(element, { name, url }) {
+    if (confirm('Tem certeza que deseja deletar?')) {
+        // remove o elemento HTML correspondente do frontend
+        element.remove();
+
+        //faz uma requisição para a API para remover os dados correspondentes.
+        const response = await fetch(`http://localhost:3000/?name=${name}&url=${url}&del=1`);
+        if (!response.ok) {
+        console.error(`Erro ao enviar os dados para a API: ${response.statusText}`);
+        }
+    }
 }
 
-// Função para enviar solicitação de exclusão para a API
-function deleteDataFromAPI(url) {
-    fetch(`http://localhost:3000/?del=true&url=${encodeURIComponent(url)}`, {
-        method: 'DELETE',
-    })
-        .then((response) => response.text())
-        .then((message) => console.log(message))
-        .catch((error) => console.error(error));
-}
+//chamada quando o usuário clica no botão de editar.
+function editElement({ name, url }) {
 
-form.addEventListener('submit', (event) => {
-    //para evitar comportamento padrão de envio do formulário
+    // recebe o nome e a URL do item a ser editado e preenche o campo de entrada
+    input.value = `${name},${url}`;
+    //variável editingItem é atualizada com os dados do item em edição
+    editingItem = { name, url };
+    //Os eventos de submit são removidos e adicionados para lidar com a edição e a adição de elementos.
+    form.removeEventListener('submit', handleAddSubmit);
+    form.addEventListener('submit', handleEditSubmit);
+}
+//é chamada quando o formulário é submetido durante a edição de um item.
+async function handleEditSubmit(event) {
+
+    //impede o comportamento padrão do formulário
     event.preventDefault();
+    const { value } = input;
 
-    //colocando valor do input em uma variavel
-    let { value } = input;
+    if (!value) {
+        return alert('Preencha o campo!');
+    }
+    const [name, url] = value.split(',');
+    if (!url) {
+        return alert('O texto não está formatado da maneira correta.');
+    }
+    //obtém o valor do campo de entrada, valida-o e extrai o nome e a URL.
+    if (!/^http/.test(url)) {
+        return alert('Digite a URL da maneira correta.');
+    }
+    // Atualizar o item na lista
+    updateElement(editingItem, { name, url });
+    // Enviar os dados atualizados para a API
+    const response = await fetch(`http://localhost:3000/?name=${name}&url=${url}`);
+    if (!response.ok) {
+        console.error(`Erro ao enviar os dados para a API: ${response.statusText}`);
+    }
+    // Limpar o campo de entrada e redefinir a variável de edição
+    input.value = '';
+    editingItem = null;
+    // Voltar a utilizar a função handleAddSubmit para futuros envios do formulário
+    form.removeEventListener('submit', handleEditSubmit);
+    form.addEventListener('submit', handleAddSubmit);
+}
 
-     //verificando se o campo esta vazio
-     if (!value)
-     return alert('Preencha o campo!')
+// recebe o elemento antigo e o novo elemento para atualizar o item na lista do frontend. 
+function updateElement(oldElement, newElement) {
+    const li = document.querySelector('.elemento-li');
+    const a = document.querySelector('.elemento-a');
+    const trash = document.querySelector('.elemento-trash');
+    const edit = document.querySelector('.elemento-edit');
 
-    //o campo é dividito em duas partes usando o split colocando as respectivas variaveis de cada parte
-    const [name, url] = value.split(',')
+    //Se os elementos são encontrados, atualiza os atributos e conteúdos com base nos dados do novo elemento.
+    if (a && trash && edit) {
+      const { name, url } = newElement;
+      a.href = url;
+      a.innerHTML = name;
+      edit.onclick = () => editElement({ name, url });
+    } else {
+      console.error('Erro ao atualizar o elemento na lista.');
+    }
+}
 
-    //verifica se a url está ausente
-    if (!url)
-        return alert('O texto não está formatado da maneira correta.')
+//é chamada quando o formulário é submetido para adicionar um novo item.
+function handleAddSubmit(event) {
 
-        //verificado se começa com http
-    if (!/^http/.test(url))
-        return alert('Digite a url da maneira correta.')
-    
-    //chamando a função com os objetos como argumento
-    addElement({ name, url })
-
-    //limpando campo de entrada input
-    input.value = ''
-});
+    //Ela impede o comportamento padrão do formulário, obtém o valor do campo de entrada
+    event.preventDefault();
+    const { value } = input;
+    if (!value) {
+        return alert('Preencha o campo!');
+    }
+    const [name, url] = value.split(',');
+    if (!url) {
+        return alert('O texto não está formatado da maneira correta.');
+    }
+    //valida-o e extrai o nome e a URL
+    if (!/^http/.test(url)) {
+        return alert('Digite a URL da maneira correta.');
+    }
+    //adicionar o novo item no frontend e fazer uma requisição para a API para enviar os dados.
+    addElementAndSendToApi({ name, url });
+    input.value = '';
+}
+//O evento de submit é adicionado ao formulário para chamar a função handleAddSubmit() quando o formulário for submetido.
+form.addEventListener('submit', handleAddSubmit);

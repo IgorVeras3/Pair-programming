@@ -7,7 +7,7 @@ const data = require('./urls.json')
 http.createServer((req, res) => {
 
     const { name, url, del } = URL.parse(req.url, true).query
-
+    
     res.writeHead(200, {
         'Access-Control-Allow-Origin': '*'
     })
@@ -29,11 +29,6 @@ http.createServer((req, res) => {
     if(del){
         data.urls = data.urls.filter(item => item.url != url)
         return writeFile(message => res.end(message))
-    }
-     // Verificar se a URL já existe na lista
-    const existingURL = data.urls.find((item) => item.url === url);
-    if (existingURL) {
-      return res.end('URL já existe na lista.');
     }
     
     data.urls.push({name,url})
