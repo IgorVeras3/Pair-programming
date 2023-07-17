@@ -1,0 +1,89 @@
+header li {
+    align-items: center;
+    display:flex;
+    justify-content: space-between;
+    list-style: none;
+    list-style: none;
+    padding: 0.5em 1em 0.5em 1em;
+  }
+  
+  header li:last-child{
+    padding: 0.5em 0 0.5em 1em;
+  }
+  
+  header li:first-child,
+  header li:last-child {
+    border: none;
+  }
+
+  /* NAV */
+  .menu_padrao ul {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .menu_padrao ul li a {
+    color: #3370b7;
+    text-decoration: none;
+  }
+  .menu_cel{
+    display: none;
+  }
+  .menu_padrao ul li a:hover {
+    color: #2f4f82;
+}
+header li{
+    font-weight: 600;
+}
+
+  @media screen and (max-width: 767px) {
+    
+    .menu_padrao{
+        display: none;
+    }
+    .menu_cel{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 1em;
+        padding-top: 1em;
+        gap: 0.5em;
+        width: 100%;
+        border-top: solid 1px;
+    }
+    
+
+    .menu_cel li{
+        justify-content: center;
+        flex-direction: column;
+    }
+    .menu_cel ul li a {
+        color: #3370b7;
+        text-decoration: none;  
+    }
+    .menu_cel .esconde_lista{
+        display:none;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin-top: 1em;
+        padding-top: 1em;
+        gap: 0.5em;
+        width: 100%;
+        }
+
+    .menu_cel li:hover .esconde_lista
+    {display:flex;}
+    
+    header li:last-child {
+        padding: 0.5em 1em 0.5em 1em;
+    }
+    header{
+        padding: 1em 0;
+    }
+    .menu_cel ul li a:hover {
+        color: #2f4f82;
+    }
+  }

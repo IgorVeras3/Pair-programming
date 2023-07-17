@@ -1,0 +1,6 @@
+main{
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-row: 2;
+    margin: auto;
+  }

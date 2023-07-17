@@ -1,0 +1,19 @@
+footer {
+    align-items: center;
+    border-top: solid 3px #3370b7;
+    color: #000;
+    display: flex;
+    grid-row: 3;
+    background-color: #fff;
+    justify-content: space-evenly;
+    margin-top: 1em;
+    padding: 1em;  
+    width: 100%;
+    
+    
+  }
+
+footer svg{
+    height: 32px;
+
+}

@@ -1,14 +1,6 @@
 {
   "urls": [
     {
-      "name": "Web Academy",
-      "url": "http://webacademy.ufac.br"
-    },
-    {
-      "name": "Ufac",
-      "url": "http://ufac.br"
-    },
-    {
       "name": "Twitter",
       "url": "https://twitter.com"
     },
@@ -17,8 +9,12 @@
       "url": "https://google.com"
     },
     {
-      "name": "Google",
-      "url": "http://google.com"
+      "name": "Twsitter",
+      "url": "https://twitter.com"
+    },
+    {
+      "name": "GitHub",
+      "url": "https://github.com/"
     }
   ]
 }

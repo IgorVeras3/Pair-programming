@@ -11,26 +11,15 @@ http.createServer((req, res) => {
   const data = require('./urls.json');
   const { name, url, del } = URL.parse(req.url, true).query;
   //Estamos também carregando os dados de um arquivo chamado urls.json usando require e obtendo os parâmetros da URL da requisição, como name, url e del, usando URL.parse.
-
-
-  //Aqui temos uma função chamada writeFile, que recebe um callback como parâmetro.  
-  function writeFile(cb) {
-    fs.writeFile(
-      //Essa função é responsável por escrever os dados atualizados no arquivo urls.json.
-      path.join(__dirname, 'urls.json'),
-      JSON.stringify(data, null, 2),
-      (err) => {                                    //Ela usa o método writeFile do módulo fs para escrever os dados em formato JSON no arquivo.
-        if (err) throw err;
-        cb('Operação realizada com sucesso!');
-      }
-    );
-  }
+    res.writeHead(200, {
+        'Access-Control-Allow-Origin': '*'
+    })
 
   if (!name || !url) {
     return res.end(JSON.stringify(data));
   }                                 //verificamos se os parâmetros name e url estão presentes na requisição.
                                     //Se algum deles estiver faltando, retornamos os dados existentes em data como uma resposta JSON. 
-
+                                    
 
   if (del) {
     const filteredData = data.urls.filter((item) => item.url !== url);   //o parâmetro del estiver presente na requisição
